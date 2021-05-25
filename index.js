@@ -33,14 +33,9 @@ const detectImage = (image, callback) => {
         callback(err);
         console.log(err);
       } 
-      else { // Successful
-        callback(data.CustomLabels);
-      } 
+      else callback(data.CustomLabels); // Successful 
   });
 }
-
-  //  app.use(express.static('public'))
-
    // Controller
    app.post('/upload', function(req, res) {
     let image;
