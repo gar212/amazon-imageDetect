@@ -13,11 +13,8 @@ app.use(cors({
   credentials: true
 }));
 
-
 var subscriptionKey = azurecred.subscriptionKey;
 var customConfigId = azurecred.customConfigId;
-
-
 
 app.get('/search', function (req, res) {
     
