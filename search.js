@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const request = require("request");
+const azurecred = require('./config/credentialsazure.json')
 
 const app = express();  
 const port = 5000;
@@ -13,12 +14,13 @@ app.use(cors({
 }));
 
 
-var subscriptionKey = 'd698cd3c79c84cf4b0eaf4ab9d745f08';
-var customConfigId = 'eae634c1-506f-4d79-bb53-1c177e0a3340';
+var subscriptionKey = azurecred.subscriptionKey;
+var customConfigId = azurecred.customConfigId;
 
 
 
 app.get('/search', function (req, res) {
+    
     var searchTerm = req.query.query;
 
     var info = {
@@ -32,12 +34,17 @@ app.get('/search', function (req, res) {
 
     request(info, function(error, response, body){
         var searchResponse = JSON.parse(body);
-        var finalResponse = searchResponse.webPages.value;
-        res.send(finalResponse);
+        if(!searchResponse.hasOwnProperty('webPages')){
+            res.send('No search results');
+            console.log('NO results');
+        } else {
+            var finalResponse = searchResponse.webPages.value;
+            res.send(finalResponse);
+        }
     });
 })
 
 
 app.listen(port, () => {
-console.log(`App listening to Port ${port}`)
+    console.log(`App listening to Port ${port}`)
 });
